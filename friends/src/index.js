@@ -6,6 +6,7 @@ import thunk from 'redux-thunk';
 
 import './index.css';
 import App from './App';
+import rootReducer from './reducers';
 
 const store = createStore(
     rootReducer,
