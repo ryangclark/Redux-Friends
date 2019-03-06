@@ -2,13 +2,14 @@ import './App.css';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { fetchFriends } from './actions/actions';
+import { fauxLogin, fetchFriends } from './actions/actions';
 
 import Friend from './components/Friend';
 
 class App extends Component {
 
   componentDidMount() {
+    this.props.fauxLogin();
     this.props.fetchFriends();
   }
 
@@ -21,9 +22,11 @@ class App extends Component {
         <section className="friends-list">
           <h2>Friends List</h2>
           {
-            this.state.friendsList.map(friend => 
-              <Friend friend={friend} key={friend.id} />
-            )
+            this.props.friendsList
+            ? this.props.friendsList.map(friend =>
+                <Friend {...friend} key={friend.id} />
+              )
+            : <p className="loading">Loading Friends!</p>
           }
         </section>
       </div>
@@ -32,11 +35,12 @@ class App extends Component {
 }
 
 // TODO: amend state below as needed
-const mapStateToProps = storeState => {
+const mapStateToProps = state => {
+  // console.log('mapStateToProps firing! state: ', state);
   return {
-    friendsList: storeState.friendsList
+    friendsList: state.fetchFriends.friendsList
   }
 }
 
 // TODO: import actions below
-export default connect(mapStateToProps, { fetchFriends })(App);
+export default connect(mapStateToProps, { fauxLogin, fetchFriends })(App);

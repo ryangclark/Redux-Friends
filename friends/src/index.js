@@ -6,11 +6,12 @@ import thunk from 'redux-thunk';
 
 import './index.css';
 import App from './App';
+import { addTokenToLocalStorage } from './actions/actions';
 import rootReducer from './reducers/reducer';
 
 const store = createStore(
     rootReducer,
-    applyMiddleware(thunk)
+    applyMiddleware(addTokenToLocalStorage, thunk)
 );
 
 ReactDOM.render(

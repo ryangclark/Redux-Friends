@@ -18,7 +18,7 @@ const fetchFriends = (state = initialState, action) => {
             return {
                 ...state,
                 fetchingFriends: false,
-                friends: action.payload,
+                friendsList: action.payload,
                 error: null
             }
         case FAILURE_FETCH_FRIENDS:
