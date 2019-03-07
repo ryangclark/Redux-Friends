@@ -30,14 +30,14 @@ class App extends Component {
   }
 }
 
-// TODO: amend state below as needed
 const mapStateToProps = state => {
   console.log('mapStateToProps firing! state: ', state);
   return {
-    fetchingFriends: state.fetchFriends.fetchingFriends,
-    friendsList: state.fetchFriends.friendsList
+    // fetchingFriends: state.fetchFriends.fetchingFriends,
+    fetchingFriends: state.friendsReducer.fetchingFriends,
+    // friendsList: state.fetchFriends.friendsList
+    friendsList: state.friendsReducer.friendsList
   }
 }
 
-// TODO: import actions below
 export default connect(mapStateToProps, { fauxLogin, fetchFriends })(App);

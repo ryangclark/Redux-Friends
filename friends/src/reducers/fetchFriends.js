@@ -3,8 +3,7 @@ import {
     STARTING_FETCH_FRIENDS,
     SUCCESS_FETCH_FRIENDS
 } from '../actions/actions';
-
-const initialState = [];
+import { initialState } from './reducer';
 
 const fetchFriends = (state = initialState, action) => {
     switch (action.type) {

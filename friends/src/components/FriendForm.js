@@ -53,6 +53,7 @@ const FriendForm = ({ dispatch }) => {
                     type="email"
                 />
             </label>
+            <button type="submit">Add Friend</button>
         </form>
     );
 };
