@@ -11,7 +11,7 @@ export const ADD_FRIEND_SUCCESS         = 'ADD_FRIEND_SUCCESS';
 export const LOGIN_SUCCESS              = 'LOGIN_SUCCESS';
 
 
-// add a friend
+
 export const addFriend = (age, email, friendName) => dispatch => {
     // dispatch `START` action
     dispatch({type: ADD_FRIEND_STARTING});
@@ -50,18 +50,18 @@ export const fauxLogin = () => dispatch => {
 
 export const fetchFriends = () => dispatch => {
     // dispatch `start` action
-    dispatch({type: STARTING_FETCH_FRIENDS});
+    dispatch({type: FETCH_FRIENDS_STARTING});
     // initiate `fetch` call
     axiosAuth()
         .get('http://localhost:5000/api/friends')
         .then(res => {
             dispatch({
-                type: SUCCESS_FETCH_FRIENDS,
+                type: ADD_FRIEND_SUCCESS,
                 payload: res.data
             });
         })
         .catch(err => dispatch({
-            type: FAILURE_FETCH_FRIENDS, 
+            type: FETCH_FRIENDS_FAILURE, 
             payload: err
         }));
 };

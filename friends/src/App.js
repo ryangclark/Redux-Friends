@@ -18,7 +18,9 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <p className="fetch-status">Status: {`${this.props.fetchingFriends}`}</p>
+          <p className="fetch-status">
+            Status: {`${this.props.fetchingFriends && this.props.addingFriend}`}
+          </p>
           <h1>Friends App</h1>
         </header>
         <div className="friends-container">
@@ -33,9 +35,8 @@ class App extends Component {
 const mapStateToProps = state => {
   console.log('mapStateToProps firing! state: ', state);
   return {
-    // fetchingFriends: state.fetchFriends.fetchingFriends,
+    addingFriend: state.friendsReducer.addingFriend,
     fetchingFriends: state.friendsReducer.fetchingFriends,
-    // friendsList: state.fetchFriends.friendsList
     friendsList: state.friendsReducer.friendsList
   }
 }

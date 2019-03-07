@@ -1,7 +1,5 @@
 import { combineReducers } from 'redux';
 
-import addFriend from './addFriend';
-import fetchFriends from './fetchFriends';
 import friendsReducer from './friendsReducer';
 
 export const initialState = {
@@ -12,7 +10,5 @@ export const initialState = {
 }
 
 export default combineReducers({
-    // addFriend,
-    // fetchFriends
     friendsReducer
 });

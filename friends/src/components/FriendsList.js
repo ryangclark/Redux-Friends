@@ -8,8 +8,8 @@ const FriendsList = props => {
           <h2>Friends List</h2>
           {
             props.friendsList
-            ? props.friendsList.map(friend =>
-                <Friend {...friend} key={friend.id} />
+            ? props.friendsList.map((friend, index) =>
+                <Friend {...friend} key={friend.id} rank={index + 1} />
               )
             : <p className="loading">Loading Friends!</p>
           }
