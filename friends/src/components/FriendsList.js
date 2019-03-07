@@ -3,6 +3,8 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 import DraggableFriend from './DraggableFriend';
 
+import { updateFriendRank } from '../actions/actions';
+
 
 // conditional styling for the list area
 function getListStyle(isDraggingOver) {
@@ -13,13 +15,17 @@ function getListStyle(isDraggingOver) {
 
 const FriendsList = props => {
   // state
-  const [dragFriendList, setDragFriendList] = useState(props.friendsList);
+  const [dragFriendList, setDragFriendList] = useState();
   
   // update the state when props.friendsList changes
   // this might impact order of items when updates come in
   useEffect(
     () => {
-      setDragFriendList(props.friendsList);
+      let sortArray = props.friendsList;
+      setDragFriendList(sortArray.sort(
+        // compares the `rank` of each object in friendsList
+        (a, b) => a.rank - b.rank
+      ));
     },
     [props.friendsList]
   );
@@ -44,8 +50,15 @@ const FriendsList = props => {
       result.source.index,
       result.destination.index
     );
-
-    setDragFriendList(items);
+    const slicered = items.slice(
+      0,
+      result.source.index > result.destination.index
+        ? result.source.index
+        : result.destination.index
+    );
+    // setDragFriendList(items);
+    console.log('slicered', slicered);
+    updateFriendRank(slicered);
   };
   
   return (

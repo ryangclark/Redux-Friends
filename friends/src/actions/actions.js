@@ -75,6 +75,7 @@ export const fetchFriends = () => dispatch => {
 
 
 export const updateFriendRank = friendSegment => dispatch => {
+    console.log('updateFriendRank running!');
     // dispatch 'start' action
     dispatch({type: CHANGE_RANK_STARTING});
     // `put` function to be used in loop below
@@ -93,7 +94,7 @@ export const updateFriendRank = friendSegment => dispatch => {
         });
     };
     // initiate loop
-    async() => {
+    const asyncLoop = async() => {
         for (let i = 0; i < friendSegment.length(); i++) {
             await putRequest(friendSegment[i])
                     .then(res => {
@@ -106,7 +107,7 @@ export const updateFriendRank = friendSegment => dispatch => {
                         }
                         return dispatch({
                             type: CHANGE_RANK_ONE_SUCCESS,
-                            payload: friend.name
+                            payload: friendSegment[i].name
                         });
                     })
                     .catch(err => dispatch({
@@ -116,4 +117,5 @@ export const updateFriendRank = friendSegment => dispatch => {
         }
         console.log('async loop done');
     }
+    asyncLoop();
 }
