@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { connect } from 'react-redux';
 
 import DraggableFriend from './DraggableFriend';
 
@@ -50,15 +51,14 @@ const FriendsList = props => {
       result.source.index,
       result.destination.index
     );
-    const slicered = items.slice(
-      0,
-      result.source.index > result.destination.index
-        ? result.source.index
-        : result.destination.index
-    );
-    // setDragFriendList(items);
-    console.log('slicered', slicered);
-    updateFriendRank(slicered);
+    // const slicered = items.slice(
+    //   0,
+    //   result.source.index > result.destination.index
+    //     ? result.source.index
+    //     : result.destination.index
+    // );
+    props.updateFriendRank(items);
+    setDragFriendList(items);
   };
   
   return (
@@ -95,4 +95,12 @@ const FriendsList = props => {
     );
 };
 
-export default FriendsList;
+const mapStateToProps = state => {
+  return {
+    // addingFriend: state.friendsReducer.addingFriend,
+    // fetchingFriends: state.friendsReducer.fetchingFriends,
+    friendsList: state.friendsReducer.friendsList
+  }
+}
+
+export default connect(mapStateToProps, { updateFriendRank })(FriendsList);

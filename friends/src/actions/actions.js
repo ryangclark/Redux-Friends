@@ -1,5 +1,4 @@
 import axiosAuth from '../axiosAuth';
-import { async } from 'q';
 
 export const ADD_FRIEND_FAILURE         = 'ADD_FRIEND_FAILURE';
 export const ADD_FRIEND_STARTING        = 'ADD_FRIEND_STARTING';
@@ -75,45 +74,67 @@ export const fetchFriends = () => dispatch => {
 
 
 export const updateFriendRank = friendSegment => dispatch => {
-    console.log('updateFriendRank running!');
+    console.log('updateFriendRank running!', friendSegment);
     // dispatch 'start' action
     dispatch({type: CHANGE_RANK_STARTING});
+
     // `put` function to be used in loop below
-    const putRequest = friend => {
+    const putRequest = (friend, newRank) => {
         return new Promise ((resolve, reject) => {
             axiosAuth()
                 .put(
                     `http://localhost:5000/api/friends/${friend.id}`,
-                    {rank: friend.rank}
+                    {rank: newRank}
                 )
                 .then(res => resolve(res))
+                .then(res => {
+                    // console.log(friendSegment.length, newRank);
+                    if (newRank === friendSegment.length) {
+                        console.log('dispatchAll to fire!');
+                        dispatchAllSuccess(res);
+                    }
+                    return dispatch({
+                        type: CHANGE_RANK_ONE_SUCCESS,
+                        payload: res.data
+                    });
+                })
                 .catch(err => reject(dispatch({
                     type: CHANGE_RANK_FAILURE,
                     error: err
                 })));
         });
     };
+
+    const dispatchAllSuccess = res => dispatch({
+        type: CHANGE_RANK_ALL_SUCCESS,
+        payload: res.data
+    });
+
     // initiate loop
     const asyncLoop = async() => {
-        for (let i = 0; i < friendSegment.length(); i++) {
-            await putRequest(friendSegment[i])
+        for (let i = 0; i < friendSegment.length; i++) {
+            await putRequest(friendSegment[i], i + 1)
                     .then(res => {
-                        console.log('Async put: ', res);
-                        if (i === friendSegment.length()) {
-                            dispatch({
-                                type: CHANGE_RANK_ALL_SUCCESS,
-                                payload: res
-                            }); 
+                        console.log('asyncLoop res: ', res);
+                        if (i + 1 === friendSegment.length) {
+                            console.log('dispatchAll to fire!!!!!!');
+                            dispatchAllSuccess(res);
                         }
-                        return dispatch({
-                            type: CHANGE_RANK_ONE_SUCCESS,
-                            payload: friendSegment[i].name
-                        });
                     })
-                    .catch(err => dispatch({
-                        type: CHANGE_RANK_FAILURE,
-                        error: err
-                    }));
+                    // .then(res => {
+                    //     console.log('Async put: ', res);
+                    //     if (i === friendSegment.length()) {
+                    //         dispatch({
+                    //             type: CHANGE_RANK_ALL_SUCCESS,
+                    //             payload: res
+                    //         }); 
+                    //     }
+                    //     return dispatch({
+                    //         type: CHANGE_RANK_ONE_SUCCESS,
+                    //         payload: friendSegment[i].name
+                    //     });
+                    // })
+                    .catch(err => console.log('asyncLoop error:', err));
         }
         console.log('async loop done');
     }
