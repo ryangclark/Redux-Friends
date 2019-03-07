@@ -4,8 +4,32 @@ export const FAILURE_FETCH_FRIENDS      = 'FAILURE_FETCH_FRIENDS';
 export const STARTING_FETCH_FRIENDS     = 'STARTING_FETCH_FRIENDS';
 export const SUCCESS_FETCH_FRIENDS      = 'SUCCESS_FETCH_FRIENDS';
 
+export const ADD_FRIEND_FAILURE         = 'ADD_FRIEND_FAILURE';
+export const ADD_FRIEND_STARTING        = 'ADD_FRIEND_STARTING';
+export const ADD_FRIEND_SUCCESS         = 'ADD_FRIEND_SUCCESS';
+
 export const LOGIN_SUCCESS              = 'LOGIN_SUCCESS';
 
+
+// add a friend
+export const addFriend = (age, email, friendName) => dispatch => {
+    // dispatch `START` action
+    dispatch({type: ADD_FRIEND_STARTING});
+    // fire axios call
+    axiosAuth()
+        .post(
+            'http://localhost:5000/api/friends',
+            {age: age, email: email, name: friendName}
+        )
+        .then(res => dispatch({
+                 type: ADD_FRIEND_SUCCESS,
+                 payload: res.data
+        }))
+        .catch(err => dispatch({
+            type: ADD_FRIEND_FAILURE,
+            payload: err
+        }))
+};
 
 // action to assign the fake login token to local storage
 export const addTokenToLocalStorage = store => next=> action => {
@@ -31,11 +55,13 @@ export const fetchFriends = () => dispatch => {
     axiosAuth()
         .get('http://localhost:5000/api/friends')
         .then(res => {
-            console.log('res.data.results: ', res.data);
             dispatch({
                 type: SUCCESS_FETCH_FRIENDS,
                 payload: res.data
             });
         })
-        .catch(err => dispatch({type: FAILURE_FETCH_FRIENDS, payload: err}));
-}
+        .catch(err => dispatch({
+            type: FAILURE_FETCH_FRIENDS, 
+            payload: err
+        }));
+};

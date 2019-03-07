@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 
 import { fauxLogin, fetchFriends } from './actions/actions';
 
-import Friend from './components/Friend';
+import FriendForm from './components/FriendForm';
+import FriendsList from './components/FriendsList';
 
 class App extends Component {
 
@@ -17,18 +18,13 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
+          <p className="fetch-status">Status: {`${this.props.fetchingFriends}`}</p>
           <h1>Friends App</h1>
         </header>
-        <section className="friends-list">
-          <h2>Friends List</h2>
-          {
-            this.props.friendsList
-            ? this.props.friendsList.map(friend =>
-                <Friend {...friend} key={friend.id} />
-              )
-            : <p className="loading">Loading Friends!</p>
-          }
-        </section>
+        <div className="friends-container">
+          <FriendsList friendsList={this.props.friendsList} />
+          <FriendForm />
+        </div>
       </div>
     );
   }
@@ -36,8 +32,9 @@ class App extends Component {
 
 // TODO: amend state below as needed
 const mapStateToProps = state => {
-  // console.log('mapStateToProps firing! state: ', state);
+  console.log('mapStateToProps firing! state: ', state);
   return {
+    fetchingFriends: state.fetchFriends.fetchingFriends,
     friendsList: state.fetchFriends.friendsList
   }
 }

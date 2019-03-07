@@ -1,0 +1,55 @@
+.fetch-status {
+    float: right;
+    font-size: 0.75rem;
+}
+
+.friend {
+    background-color: #eee;
+    border: 1px solid rgba(0,0,0,0.2);
+    margin: 0.5rem;
+    padding: 0.75rem;
+    width: 18rem;
+}
+
+.friends-container {
+    display: flex;
+    /* flex-wrap: wrap; */
+    justify-content: center;
+}
+
+.friend-form {
+    padding-right: 1rem;
+    padding-top: 1rem;
+}
+
+.friends-list {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0.5rem 1rem 1rem;
+    max-width: 100%;
+}
+
+.friends-list > h2 {
+    width: 100%;
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: bold;
+}
+h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+h3 {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+header {
+    background: rgba(0,0,0,0.1);
+    border-bottom: rgba(0,0,0,0.2);
+    margin-bottom: 1rem;
+    padding: 1rem;
+    width: 100%;
+}
