@@ -47,8 +47,7 @@ const FriendsList = props => {
 
     setDragFriendList(items);
   };
-  console.log('dragFriendList: ', dragFriendList);
-  console.log('props.friendList: ', props.friendsList);
+  
   return (
     <section className="friends-list-container">
       <h2>Friends List</h2>
