@@ -33,7 +33,7 @@ const FriendForm = ({ dispatch }) => {
                     ref={node => nameInput = node}
                     required
                     type="text"
-                />
+                /><br></br>
             </label>
             <label>
                 Age:<br></br>
@@ -42,7 +42,7 @@ const FriendForm = ({ dispatch }) => {
                     ref={node => (ageInput = node)}
                     required
                     type="number"
-                />
+                /><br></br>
             </label>
             <label>
                 Email:<br></br>
@@ -51,7 +51,7 @@ const FriendForm = ({ dispatch }) => {
                     ref={node => emailInput = node}
                     required
                     type="email"
-                />
+                /><br></br>
             </label>
             <button type="submit">Add Friend</button>
         </form>

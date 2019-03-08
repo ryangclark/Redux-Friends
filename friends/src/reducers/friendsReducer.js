@@ -27,7 +27,7 @@ const friendsReducer = (state = initialState, action) => {
             console.log('CHANGE_RANK_STARTING');
             return { ...state, changingRank: true};
         case CHANGE_RANK_ONE_SUCCESS:
-            return console.log('Successfully Changed Rank', action.payload);
+            return console.log(`Successfully changed ${action.payload.name}'s rank to ${action.payload.rank}`);
         case CHANGE_RANK_ALL_SUCCESS:
             console.log('CHANGE_RANK_ALL_SUCCESS', action.payload);
             return { ...state, changingRank: false, friendsList: action.payload, error: null };

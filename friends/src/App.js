@@ -33,7 +33,7 @@ class App extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log('mapStateToProps firing! state: ', state);
+  // console.log('mapStateToProps firing! state: ', state);
   return {
     addingFriend: state.friendsReducer.addingFriend,
     fetchingFriends: state.friendsReducer.fetchingFriends,

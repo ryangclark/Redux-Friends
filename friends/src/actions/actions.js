@@ -86,18 +86,24 @@ export const updateFriendRank = friendSegment => dispatch => {
                     `http://localhost:5000/api/friends/${friend.id}`,
                     {rank: newRank}
                 )
-                .then(res => resolve(res))
                 .then(res => {
-                    // console.log(friendSegment.length, newRank);
-                    if (newRank === friendSegment.length) {
-                        console.log('dispatchAll to fire!');
-                        dispatchAllSuccess(res);
-                    }
-                    return dispatch({
+                    resolve(res);
+                    dispatch({
                         type: CHANGE_RANK_ONE_SUCCESS,
-                        payload: res.data
+                        payload: res.data[newRank]
                     });
                 })
+                // .then(res => {
+                //     // console.log(friendSegment.length, newRank);
+                //     // if (newRank === friendSegment.length) {
+                //     //     console.log('dispatchAll to fire!');
+                //     //     dispatchAllSuccess(res);
+                //     // }
+                //     return dispatch({
+                //         type: CHANGE_RANK_ONE_SUCCESS,
+                //         payload: res.data
+                //     });
+                // })
                 .catch(err => reject(dispatch({
                     type: CHANGE_RANK_FAILURE,
                     error: err
@@ -105,38 +111,39 @@ export const updateFriendRank = friendSegment => dispatch => {
         });
     };
 
-    const dispatchAllSuccess = res => dispatch({
-        type: CHANGE_RANK_ALL_SUCCESS,
-        payload: res.data
-    });
+    // const dispatchAllSuccess = res => dispatch({
+    //     type: CHANGE_RANK_ALL_SUCCESS,
+    //     payload: res.data
+    // });
 
     // initiate loop
-    const asyncLoop = async() => {
+    // const asyncLoop = async() => {
+    //     for (let i = 0; i < friendSegment.length; i++) {
+    //         await putRequest(friendSegment[i], i + 1)
+    //                 .then(res => {
+    //                     console.log('asyncLoop res: ', res);
+    //                     if (i + 1 === friendSegment.length) {
+    //                         console.log('dispatchAll to fire!!!!!!');
+    //                         dispatchAllSuccess(res);
+    //                     }
+    //                 })
+    //                 .catch(err => console.log('asyncLoop error:', err));
+    //     }
+    //     console.log('async loop done');
+    // }
+    // asyncLoop();
+    function realAsyncLoop() {
+        let chain = Promise.resolve();
+        const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
         for (let i = 0; i < friendSegment.length; i++) {
-            await putRequest(friendSegment[i], i + 1)
-                    .then(res => {
-                        console.log('asyncLoop res: ', res);
-                        if (i + 1 === friendSegment.length) {
-                            console.log('dispatchAll to fire!!!!!!');
-                            dispatchAllSuccess(res);
-                        }
-                    })
-                    // .then(res => {
-                    //     console.log('Async put: ', res);
-                    //     if (i === friendSegment.length()) {
-                    //         dispatch({
-                    //             type: CHANGE_RANK_ALL_SUCCESS,
-                    //             payload: res
-                    //         }); 
-                    //     }
-                    //     return dispatch({
-                    //         type: CHANGE_RANK_ONE_SUCCESS,
-                    //         payload: friendSegment[i].name
-                    //     });
-                    // })
-                    .catch(err => console.log('asyncLoop error:', err));
+            chain = chain.then(() => wait(1000)).then(() => putRequest(friendSegment[i], i + 1));
+            // chain = chain.then(() => putRequest(friendSegment[i], i + 1));
         }
-        console.log('async loop done');
+        chain = chain
+                    // .then(res => console.log('realAsyncLoop done', res))
+                    .then(res => dispatch({type: CHANGE_RANK_ALL_SUCCESS, payload: res.data}))
+                    .catch(err => console.log(err));
+        return chain;
     }
-    asyncLoop();
+    realAsyncLoop();
 }
