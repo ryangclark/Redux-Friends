@@ -6,44 +6,50 @@ const app = express();
 const token =
   'eyJ1c2VySWQiOiJiMDhmODZhZi0zNWRhLTQ4ZjItOGZhYi1jZWYzOTA0NjYwYmQifQ';
 
-let nextId = 6;
+let nextId = 7;
 
 let friends = [
   {
     id: 1,
     name: 'Ben',
     age: 30,
-    email: 'ben@lambdaschool.com'
+    email: 'ben@lambdaschool.com',
+    rank: 2
   },
   {
     id: 2,
     name: 'Austen',
     age: 45,
-    email: 'austen@lambdaschool.com'
+    email: 'austen@lambdaschool.com',
+    rank: 1
   },
   {
     id: 3,
     name: 'Ryan',
     age: 15,
-    email: 'ryan@lambdaschool.com'
+    email: 'ryan@lambdaschool.com',
+    rank: 5
   },
   {
     id: 4,
     name: 'Dustin',
     age: 25,
-    email: 'D-munny@lambdaschool.com'
+    email: 'D-munny@lambdaschool.com',
+    rank: 3
   },
   {
     id: 5,
     name: 'Sean',
     age: 35,
-    email: 'sean@lambdaschool.com'
+    email: 'sean@lambdaschool.com',
+    rank: 6
   },
   {
     id: 6,
     name: 'Michelle',
     age: 67,
-    email: 'michelle@gmail.com'
+    email: 'michelle@gmail.com',
+    rank: 4
   }
 ];
 
@@ -56,7 +62,7 @@ function authenticator(req, res, next) {
   if (authorization === token) {
     next();
   } else {
-    res.status(403).json({ error: 'User be logged in to do that.' });
+    res.status(403).json({ error: 'User must be logged in to do that.' });
   }
 }
 
@@ -91,7 +97,7 @@ app.get('/api/friends/:id', authenticator, (req, res) => {
 });
 
 app.post('/api/friends', authenticator, (req, res) => {
-  const friend = { id: getNextId(), ...req.body };
+  const friend = { id: getNextId(), ...req.body, rank: friends.length };
 
   friends = [...friends, friend];
 
